@@ -60,6 +60,9 @@ fun cacheImageFromFirebase3(mainActivity: MainActivity ,context : Context, calen
 }
 
 fun cacheImageFromFirebase(mainActivity: MainActivity ,context : Context, calendar : Calendar, imageView: ImageView) {
+    if (isNetworkConnected(context) == false)
+        return
+
     try {
         Log.e(getFileName(calendar).toString(), "filename")
         val ref = Firebase.storage.reference.child(getFileName(calendar))

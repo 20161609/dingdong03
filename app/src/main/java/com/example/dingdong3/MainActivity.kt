@@ -27,6 +27,7 @@ var buttonBlock : Boolean = false
 
 class MainActivity : AppCompatActivity() {
     lateinit var toastMessageSaved : CardView
+    lateinit var toastMessageError : CardView
     lateinit var dayList : Array<Calendar>
     lateinit var dayBox : LinearLayout
     lateinit var menuBox : LinearLayout
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         /*2. set each frame's value */
         dialog=BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
 
@@ -53,9 +53,6 @@ class MainActivity : AppCompatActivity() {
         /*1. init today*/
         initToday()
 
-
-//        cacheImageFromFirebase(this, this, dayList[dayIndex], dayCard)
-
         /*3. arrange viewers*/
         val box : RelativeLayout = findViewById(R.id.box)
         menuBox=findViewById(R.id.menu_box)
@@ -63,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         // init variable for each message
         val viewersActivity = LayoutInflater.from(this).inflate(R.layout.viewers,null)
         toastMessageSaved = viewersActivity.findViewById(R.id.toastMessageSaved)
+        toastMessageError = viewersActivity.findViewById(R.id.toastMessageError)
+
         vAnimation =viewersActivity.findViewById(R.id.v_animation)
 
         val location = IntArray(2)
@@ -71,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         toastX = 0
         val viewerBox : RelativeLayout = viewersActivity.findViewById(R.id.viewerBox)
         viewerBox.removeView(toastMessageSaved)
+        viewerBox.removeView(toastMessageError)
 
         /*4. set each button*/
         val button0 : Button = findViewById(R.id.button0)

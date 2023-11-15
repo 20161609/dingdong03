@@ -258,6 +258,24 @@
 
             </LinearLayout>
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toastMessageError"
+            android:layout_height="105.0524737dp"
+            android:layout_width="370.8dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="13dp">
+            <TextView
+                android:layout_height="105.0524737dp"
+                android:layout_width="370.8dp"
+                android:fontFamily="@font/arita4_0_m"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:background="@color/white"
+                android:gravity="center"
+                android:id="@+id/errorText"
+                android:text="에러메시지"/>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 

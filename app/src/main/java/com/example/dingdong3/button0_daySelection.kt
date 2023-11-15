@@ -2,13 +2,11 @@ package com.example.dingdong3
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.res.ResourcesCompat
 import java.util.*
@@ -79,6 +77,17 @@ fun button0Func (mainActivity: MainActivity, context: Context){
                         val dayCard: ImageView = mainActivity.findViewById(R.id.day_card)
                         cacheImageFromFirebase(mainActivity, context, dayList[dayIndex], dayCard)
                     } else {
+                        val toastMessage = Toast(mainActivity).apply {
+                            view = mainActivity.toastMessageError
+                            duration = Toast.LENGTH_SHORT
+                            setGravity(Gravity.BOTTOM, mainActivity.toastX , mainActivity.toastY)
+                        }
+                        val handler = Handler()
+                        handler.postDelayed({ toastMessage!!.cancel() }, 1000.toLong())
+                        toastMessage.show().run {
+                            mCountDown.start()
+                        }
+
                         //float error message
                     }
                 }
