@@ -1,10 +1,13 @@
 package com.example.dingdong3
 
 import android.content.Context
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.LightingColorFilter
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import android.widget.SeekBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -32,7 +35,10 @@ fun cacheImageFromFirebase3(mainActivity: MainActivity ,context : Context, calen
         val add = 0x00808080
 
         mainActivity.dayCardBox.addView(mainActivity.loadingAnimation)
-        imageView.colorFilter = LightingColorFilter(mul.toInt(), add.toInt())
+//        imageView.colorFilter = LightingColorFilter(mul.toInt(), add.toInt())
+
+        val a : SeekBar
+
         ref.downloadUrl.addOnSuccessListener { uri ->
             // Preload the image
             Glide.with(context)
@@ -59,19 +65,102 @@ fun cacheImageFromFirebase3(mainActivity: MainActivity ,context : Context, calen
     }
 }
 
-fun cacheImageFromFirebase(mainActivity: MainActivity ,context : Context, calendar : Calendar, imageView: ImageView) {
-    if (isNetworkConnected(context) == false)
+
+
+fun imageBlur(imageView: ImageView){
+    val matrix = ColorMatrix().apply {
+        setSaturation(0f) // 흑백 이미지로 변경
+    }
+
+    val brightness = 100f  // 밝기 조절
+    val matrixValues = floatArrayOf(
+        1f, 0f, 0f, 0f, brightness,
+        0f, 1f, 0f, 0f, brightness,
+        0f, 0f, 1f, 0f, brightness,
+        0f, 0f, 0f, 1f, 0f
+    )
+
+    matrix.set(matrixValues)
+    imageView.colorFilter = ColorMatrixColorFilter(matrix)
+}
+
+fun cacheImageFromFirebase(mainActivity: MainActivity, context: Context, calendar: Calendar, imageView: ImageView) {
+    try {
+        val ref = Firebase.storage.reference.child(getFileName(calendar))
+        val imageView : ImageView = mainActivity.findViewById(R.id.day_card)
+        mainActivity.dayCardBox.addView(mainActivity.loadingAnimation)
+
+        imageBlur(imageView)
+
+        ref.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(context)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(ObjectKey(getFileName(calendar))) // 사용자 지정 캐시 키를 설정합니다.
+                .centerCrop()
+                .placeholder(imageView.drawable) // Use current image as the placeholder
+                .error(R.drawable.firstcard) // Fallback image in case of error
+                .into(imageView).run {
+                    mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
+                    imageView.clearColorFilter()
+                }
+            Log.e("getBytes", "Success")
+        }.addOnFailureListener {
+            // Handle any errors
+            Glide.with(context)
+                .load(R.drawable.firstcard)
+                .into(imageView)
+            mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
+            Log.e("getBytes", "failure")
+        }
+    } catch (e: Exception) {
+        Log.e("Error", "Why??")
+        println(e)
+    }
+}
+fun cacheImageFromFirebaseKK(mainActivity: MainActivity, context: Context, calendar: Calendar, imageView: ImageView) {
+    if (!isNetworkConnected(context))
         return
 
     try {
-        Log.e(getFileName(calendar).toString(), "filename")
+        val ref = Firebase.storage.reference.child(getFileName(calendar))
+//        mainActivity.dayCardBox.addView(mainActivity.loadingAnimation)
+  //      imageView.alpha = 0.5f
+
+        ref.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(context)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(ObjectKey(getFileName(calendar)))
+                .centerCrop()
+                .into(imageView).run {
+//                    mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
+  //                  imageView.alpha = 1.0f
+                }
+            Log.e("getBytes", "Success")
+        }.addOnFailureListener {
+            mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
+            Log.e("getBytes", "failure")
+        }
+    } catch (e: Exception) {
+        mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
+        Log.e("Error", "Why??")
+        println(e)
+    }
+}
+
+fun cacheImageFromFirebaseK(mainActivity: MainActivity ,context : Context, calendar : Calendar, imageView: ImageView) {
+    if (!isNetworkConnected(context))
+        return
+
+    try {
+        //Log.e(getFileName(calendar).toString(), "filename")
         val ref = Firebase.storage.reference.child(getFileName(calendar))
         val imageView : ImageView = mainActivity.findViewById(R.id.day_card)
-        val mul = 0xFF8F8F8F
-        val add = 0x00808080
-//        blurImage(mainActivity)
         mainActivity.dayCardBox.addView(mainActivity.loadingAnimation)
-        imageView.colorFilter = LightingColorFilter(mul.toInt(), add.toInt())
+
+        imageBlur(imageView)
+//        imageView.colorFilter = LightingColorFilter(mul.toInt(), add.toInt())
         ref.downloadUrl.addOnSuccessListener { uri ->
             Glide.with(context)
                 .load(uri)
@@ -80,7 +169,7 @@ fun cacheImageFromFirebase(mainActivity: MainActivity ,context : Context, calend
                 .centerCrop()
                 .into(imageView).run {
                     mainActivity.dayCardBox.removeView(mainActivity.loadingAnimation)
-                    imageView.colorFilter = null
+                    imageView.clearColorFilter()
                 }
             Log.e("getBytes", "Success")
         }.addOnFailureListener {

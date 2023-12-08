@@ -53,8 +53,7 @@
                     android:id="@+id/day_card"
                     android:background="@android:color/transparent"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:src="@drawable/firstcard"/>
+                    android:layout_width="match_parent"/>
             </androidx.cardview.widget.CardView>
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading_animation"
@@ -122,7 +121,8 @@
                 android:text="저장"
                 android:textColor="@color/black"
                 android:textSize="13dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="true" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button2"
                 style="?android:attr/borderlessButtonStyle"

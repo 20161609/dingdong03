@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*2. set each frame's value */
+        /*1. set each frame's value */
         dialog=BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
 
         val dayCard : ImageView = findViewById(R.id.day_card)
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         loadingAnimation = findViewById(R.id.loading_animation)
         dayCardBox.removeView(loadingAnimation)
 
-        /*1. init today*/
+        /*2. init today*/
         initToday()
 
         /*3. arrange viewers*/

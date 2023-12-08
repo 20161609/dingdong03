@@ -80,6 +80,8 @@ class SaveImageFile(context: Context) {
         }
     }
 
+
+
     /* Checks if external storage is available for read and write */
     public fun isExternalStorageWritable(): Boolean {
         val state = Environment.getExternalStorageState()

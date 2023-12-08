@@ -99,7 +99,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/arita4_0_m"
-                    android:text="jinhyang.programmer@gmailcom으로 메일 부탁드립니다."
+                    android:text="dksshwns@sogang.ac.kr으로 메일 부탁드립니다."
                     android:textColor="@color/black"
                     android:textSize="15dp" />
 
@@ -153,13 +153,14 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/version_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/arita4_0_m"
-                    android:text="1.5.4"
+                    android:text="1.0.0"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
 

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.res.ResourcesCompat
@@ -33,12 +34,24 @@ fun button0Func (mainActivity: MainActivity, context: Context){
     }
     fun modifyMonth(){
         Log.e("modifyMonth","modifyMonth")
-        var month : Int = -1
-        for(i in 6 downTo 0){
+        var month : Int = dayList[0].get(Calendar.MONTH).plus(1)
+        var monthPrintedIndex : Int = 6
+        for(i in 5 downTo 0){
             val new_month : Int = dayList[6-i].get(Calendar.MONTH).plus(1)
-            if(month != new_month) monthTextViews[i].text="${new_month}월"
-            else monthTextViews[i].text=""
+            if(month != new_month) monthPrintedIndex = i
+                //monthTextViews[i].text="${new_month}월"
             month=new_month
+        }
+        if(monthPrintedIndex == 6)
+            monthPrintedIndex = 0
+
+        for(i in 0..6){
+            if(i==0 || i == monthPrintedIndex){
+                val new_month : Int = dayList[6-i].get(Calendar.MONTH).plus(1)
+                monthTextViews[i].text="${new_month}월"
+            }else{
+                monthTextViews[i].text=""
+            }
         }
     }
     fun modifyDay(){
@@ -53,11 +66,15 @@ fun button0Func (mainActivity: MainActivity, context: Context){
         for(i in 0..6){
             val button : AppCompatButton = dayButtons[i]
             if(dayIndex==(6-i)) {
+                button.gravity = Gravity.CENTER
+                button.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 button.setBackgroundResource(R.drawable.shape_for_circle_button_clicked)
                 button.setTextColor(Color.WHITE)
                 button.typeface = ResourcesCompat.getFont(context, R.font.arita4_0_b)
             }
             else {
+                button.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                button.gravity = Gravity.CENTER
                 button.setBackgroundResource(R.drawable.shape_for_circle_button)
                 button.setTextColor(Color.BLACK)
                 button.typeface = ResourcesCompat.getFont(context, R.font.arita4_0_m)
